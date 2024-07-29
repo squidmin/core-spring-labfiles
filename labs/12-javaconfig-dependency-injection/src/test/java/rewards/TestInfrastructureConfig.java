@@ -66,4 +66,5 @@ public class TestInfrastructureConfig {
 				.addScript("classpath:rewards/testdb/data.sql") //
 				.build();
 	}
+
 }

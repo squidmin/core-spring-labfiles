@@ -16,6 +16,7 @@ import rewards.internal.reward.RewardRepository;
 
 @Configuration
 public class RewardsConfig {
+
 	private DataSource dataSource;
 
 	// As this is the only constructor, @Autowired is not needed.
