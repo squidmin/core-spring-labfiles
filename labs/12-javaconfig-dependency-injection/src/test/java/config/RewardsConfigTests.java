@@ -25,15 +25,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 @SuppressWarnings("unused")
 public class RewardsConfigTests {
 
-	// Provide a mock object for testing
 	private DataSource dataSource = Mockito.mock(DataSource.class);
-
-	// TODO-05: Run the test
-	// - Uncomment the code below between /* and */
-	// - If you have implemented RewardsConfig as requested it should compile.
-	// - Fix RewardsConfig if necessary.
-	// - Now run the test, it should pass.
-
 
 	private RewardsConfig rewardsConfig = new RewardsConfig(dataSource);
 
