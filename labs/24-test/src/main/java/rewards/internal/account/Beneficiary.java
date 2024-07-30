@@ -76,4 +76,5 @@ public class Beneficiary extends Entity {
 	public String toString() {
 		return "name = '" + name + "', allocationPercentage = " + allocationPercentage + ", savings = " + savings + ")";
 	}
+
 }

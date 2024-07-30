@@ -38,4 +38,5 @@ public class RewardConfirmation {
 	public String toString() {
 		return confirmationNumber;
 	}
+
 }

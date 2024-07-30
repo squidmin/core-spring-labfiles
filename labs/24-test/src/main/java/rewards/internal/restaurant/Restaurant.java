@@ -1,16 +1,15 @@
 package rewards.internal.restaurant;
 
-import rewards.Dining;
-import rewards.internal.account.Account;
-
 import common.money.MonetaryAmount;
 import common.money.Percentage;
 import common.repository.Entity;
+import rewards.Dining;
+import rewards.internal.account.Account;
 
 /**
  * A restaurant establishment in the network. Like AppleBee's.
  * 
- * Restaurants calculate how much benefit may be awarded to an account for dining based on a availability policy and a
+ * Restaurants calculate how much benefit may be awarded to an account for dining based on an availability policy and a
  * benefit percentage.
  */
 public class Restaurant extends Entity {
@@ -77,4 +76,5 @@ public class Restaurant extends Entity {
 	public String toString() {
 		return "Number = '" + number + "', name = '" + name + "', benefitPercentage = " + benefitPercentage;
 	}
+
 }

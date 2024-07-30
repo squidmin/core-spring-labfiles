@@ -1,9 +1,9 @@
 package rewards;
 
-import java.util.Set;
-
 import common.money.MonetaryAmount;
 import common.money.Percentage;
+
+import java.util.Set;
 
 /**
  * A summary of a monetary contribution made to an account that was distributed among the account's beneficiaries.
@@ -135,4 +135,5 @@ public class AccountContribution {
 	public String toString() {
 		return "Contribution of " + amount + " to account '" + accountNumber + "' distributed " + distributions;
 	}
+
 }

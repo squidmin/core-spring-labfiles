@@ -1,25 +1,22 @@
 package rewards.internal.reward;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
-
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.sql.Statement;
-
-import javax.sql.DataSource;
-
+import common.money.MonetaryAmount;
+import common.money.Percentage;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-
+import org.springframework.jdbc.datasource.embedded.EmbeddedDatabaseBuilder;
 import rewards.AccountContribution;
 import rewards.Dining;
 import rewards.RewardConfirmation;
 import rewards.internal.account.Account;
-import org.springframework.jdbc.datasource.embedded.EmbeddedDatabaseBuilder;
 
-import common.money.MonetaryAmount;
-import common.money.Percentage;
+import javax.sql.DataSource;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 /**
  * Tests the JDBC reward repository with a test data source to verify data access and relational-to-object mapping
@@ -78,4 +75,5 @@ public class JdbcRewardRepositoryTests {
 			.addScript("/rewards/testdb/data.sql")
 			.build();
 	}
+
 }

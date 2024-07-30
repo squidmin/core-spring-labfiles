@@ -35,4 +35,5 @@ public class TestInfrastructureJndiConfig {
 	public DataSource dataSource() throws Exception {
 		return (DataSource) (new InitialContext()).lookup("java:/comp/env/jdbc/rewards");
 	}
+
 }

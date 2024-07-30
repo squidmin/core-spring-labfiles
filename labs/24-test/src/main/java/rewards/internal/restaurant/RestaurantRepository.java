@@ -14,4 +14,5 @@ public interface RestaurantRepository {
 	 * @return the restaurant
 	 */
 	public Restaurant findByMerchantNumber(String merchantNumber);
+
 }

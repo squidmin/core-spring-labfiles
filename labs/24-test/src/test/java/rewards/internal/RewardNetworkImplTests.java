@@ -1,20 +1,17 @@
 package rewards.internal;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
-import static org.junit.jupiter.api.Assertions.assertAll;
-
+import common.money.MonetaryAmount;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-
-import common.money.MonetaryAmount;
 import rewards.AccountContribution;
 import rewards.Dining;
 import rewards.RewardConfirmation;
 import rewards.internal.account.AccountRepository;
 import rewards.internal.restaurant.RestaurantRepository;
 import rewards.internal.reward.RewardRepository;
+
+import static org.junit.jupiter.api.Assertions.*;
 
 /**
  * Unit tests for the RewardNetworkImpl application logic. Configures the implementation with stub repositories
@@ -72,4 +69,5 @@ public class RewardNetworkImplTests {
 				() -> assertEquals(MonetaryAmount.valueOf("4.00"), contribution.getDistribution("Corgan").getAmount()));
 		
 	}
+
 }

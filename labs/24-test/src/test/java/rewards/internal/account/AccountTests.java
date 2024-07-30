@@ -1,15 +1,11 @@
 package rewards.internal.account;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertFalse;
-import static org.junit.jupiter.api.Assertions.assertTrue;
-import static org.junit.jupiter.api.Assertions.assertThrows;
-
-import org.junit.jupiter.api.Test;
-
 import common.money.MonetaryAmount;
 import common.money.Percentage;
+import org.junit.jupiter.api.Test;
 import rewards.AccountContribution;
+
+import static org.junit.jupiter.api.Assertions.*;
 
 /**
  * Unit tests for the Account class that verify Account behavior works in isolation.
@@ -65,4 +61,5 @@ public class AccountTests {
 				});
 	    assertEquals("Cannot make contributions to this account: it has invalid beneficiary allocations", exception.getMessage());
 	}
+
 }

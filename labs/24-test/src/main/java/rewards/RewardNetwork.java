@@ -25,4 +25,5 @@ public interface RewardNetwork {
 	 * @return confirmation of the reward
 	 */
 	public RewardConfirmation rewardAccountFor(Dining dining);
+
 }

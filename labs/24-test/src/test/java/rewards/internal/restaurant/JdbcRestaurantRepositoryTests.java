@@ -74,4 +74,5 @@ public class JdbcRestaurantRepositoryTests {
 			.addScript("/rewards/testdb/data.sql")
 			.build();
 	}
+
 }

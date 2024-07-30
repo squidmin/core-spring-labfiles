@@ -1,8 +1,8 @@
 package rewards.internal;
 
+import common.money.MonetaryAmount;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
 import rewards.AccountContribution;
 import rewards.Dining;
 import rewards.RewardConfirmation;
@@ -12,8 +12,6 @@ import rewards.internal.account.AccountRepository;
 import rewards.internal.restaurant.Restaurant;
 import rewards.internal.restaurant.RestaurantRepository;
 import rewards.internal.reward.RewardRepository;
-
-import common.money.MonetaryAmount;
 
 /**
  * Rewards an Account for Dining at a Restaurant.
@@ -54,4 +52,5 @@ public class RewardNetworkImpl implements RewardNetwork {
 		accountRepository.updateBeneficiaries(account);
 		return rewardRepository.confirmReward(contribution, dining);
 	}
+
 }

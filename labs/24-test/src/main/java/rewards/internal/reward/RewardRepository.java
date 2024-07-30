@@ -17,4 +17,5 @@ public interface RewardRepository {
 	 * date
 	 */
 	public RewardConfirmation confirmReward(AccountContribution contribution, Dining dining);
+
 }

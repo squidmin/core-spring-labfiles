@@ -111,4 +111,5 @@ public class Dining {
 	public String toString() {
 		return "Dining of " + amount + " charged to '" + creditCardNumber + "' by '" + merchantNumber + "' on " + date;
 	}
+
 }

@@ -93,4 +93,5 @@ public class JdbcAccountRepositoryTests {
 			.addScript("/rewards/testdb/data.sql")
 			.build();
 	}
+
 }
