@@ -4,7 +4,7 @@ import common.money.MonetaryAmount;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.SpringApplication;
-import org.springframework.context.ConfigurableApplicationContext;
+import org.springframework.context.ApplicationContext;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
@@ -15,7 +15,7 @@ public class RewardNetworkTests {
 
     @BeforeEach
     void setUp() {
-        ConfigurableApplicationContext appContext = SpringApplication.run(TestInfrastructureConfig.class);
+        ApplicationContext appContext = SpringApplication.run(TestInfrastructureConfig.class);
         rewardNetwork = appContext.getBean(RewardNetwork.class);
     }
 
