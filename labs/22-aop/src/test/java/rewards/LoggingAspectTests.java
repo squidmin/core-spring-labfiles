@@ -32,4 +32,5 @@ public class LoggingAspectTests {
 			assertTrue(consoleOutput.contains("rewards.internal.aspects.LoggingAspect"));
 		}
 	}
+
 }

@@ -46,4 +46,5 @@ public class DBExceptionHandlingAspectTests {
             assertThat(capture.toString(), containsString(DBExceptionHandlingAspect.EMAIL_FAILURE_MSG));
         }
     }
+
 }
