@@ -21,7 +21,4 @@ public class DBExceptionHandlingAspect {
 		logger.warn(EMAIL_FAILURE_MSG + e + "\n");
 	}
 
-	//	TODO-11 (Optional): Annotate this class as a Spring-managed bean.
-	//	- Note that we enabled component scanning in an earlier step.
-
 }

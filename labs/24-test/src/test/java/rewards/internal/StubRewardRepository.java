@@ -1,18 +1,21 @@
 package rewards.internal;
 
-import java.util.Random;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
+import org.springframework.context.annotation.Profile;
+import org.springframework.stereotype.Repository;
 import rewards.AccountContribution;
 import rewards.Dining;
 import rewards.RewardConfirmation;
 import rewards.internal.reward.RewardRepository;
 
+import java.util.Random;
+
 /**
  * A dummy reward repository implementation.
  */
+@Repository
+@Profile("stub")
 public class StubRewardRepository implements RewardRepository {
 
 	private final Logger logger = LoggerFactory.getLogger(getClass());
@@ -31,4 +34,5 @@ public class StubRewardRepository implements RewardRepository {
 	private String confirmationNumber() {
 		return new Random().toString();
 	}
+
 }
