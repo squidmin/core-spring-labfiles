@@ -12,7 +12,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Import;
 import org.springframework.jdbc.core.JdbcTemplate;
 
-@SpringBootApplication(exclude = {DataSourceAutoConfiguration.class})
+@SpringBootApplication
 @EnableConfigurationProperties(RewardsRecipientProperties.class)
 //@ConfigurationPropertiesScan  // Supported from Spring Boot 2.2.1.
 @Import(RewardsConfig.class)  // This is required since the RewardsConfig configuration now provides the DataSource bean

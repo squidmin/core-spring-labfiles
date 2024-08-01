@@ -22,12 +22,12 @@ public class RewardsConfig {
 
     private final Logger logger = LoggerFactory.getLogger(getClass());
 
-	DataSource dataSource;
+//	DataSource dataSource;
 
-	@Autowired  // This @Autowired annotation is optional here
-	public RewardsConfig(DataSource dataSource) {
-		this.dataSource = dataSource;
-	}
+//	@Autowired  // This @Autowired annotation is optional here
+//	public RewardsConfig(DataSource dataSource) {
+//		this.dataSource = dataSource;
+//	}
 
     @Bean
     public DataSource dataSource() {
@@ -50,19 +50,19 @@ public class RewardsConfig {
 
     @Bean
     public AccountRepository accountRepository() {
-        JdbcAccountRepository repository = new JdbcAccountRepository(dataSource);
+        JdbcAccountRepository repository = new JdbcAccountRepository(dataSource());
         return repository;
     }
 
     @Bean
     public RestaurantRepository restaurantRepository() {
-        JdbcRestaurantRepository repository = new JdbcRestaurantRepository(dataSource);
+        JdbcRestaurantRepository repository = new JdbcRestaurantRepository(dataSource());
         return repository;
     }
 
     @Bean
     public RewardRepository rewardRepository() {
-        JdbcRewardRepository repository = new JdbcRewardRepository(dataSource);
+        JdbcRewardRepository repository = new JdbcRewardRepository(dataSource());
         return repository;
     }
 
