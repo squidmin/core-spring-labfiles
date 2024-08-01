@@ -2,10 +2,8 @@ package rewards;
 
 import common.money.MonetaryAmount;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.test.context.ContextConfiguration;
-import org.springframework.test.context.junit.jupiter.SpringExtension;
+import org.springframework.boot.test.context.SpringBootTest;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
@@ -15,16 +13,21 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
  * successfully. Uses Spring to bootstrap the application for use in a test environment.
  */
 
-// TODO-09: Refactor this test code
-// - Run this test without making any change, it will fail - think about why it fails
-// - Replace the @ExtendWith and @ContextConfiguration annotations below with @SpringBootTest
-//   (There is no need to specify any configuration classes,
-//    because @SpringBootTest will find and use the configuration
-//    of RewardApplication automatically.)
-// - Run the test, it should now pass.
-// - Think about where auto-configuration is enabled for the test.
-@ExtendWith(SpringExtension.class)                      // Replace me
-@ContextConfiguration(classes = {SystemTestConfig.class}) // Replace me
+/**
+ * There is no need to specify the configuration class to use as the annotation will <i>automatically</i> component scan
+ * for any <code>@Component</code> (or <code>@Configuration</code>) classes in the current package or below.
+ * Since the <code>SystemTestConfig</code> class is in the same package, it will be discovered and processed.
+ * This includes processing the <code>@Import</code> annotation that references the <code>RewardsConfig</code> class
+ * containing all the other bean definitions.
+ *
+ * This is considered and end-to-end integration test, including the wired components.
+ *
+ * Note that in a real production application you are most likely to configure an external database.
+ * Spring Boot offers properties to do this.
+ */
+//@ExtendWith(SpringExtension.class)
+//@ContextConfiguration(classes = {SystemTestConfig.class})
+@SpringBootTest
 public class RewardNetworkTests {
 
     /**
@@ -62,4 +65,5 @@ public class RewardNetworkTests {
         assertEquals(MonetaryAmount.valueOf("4.00"), contribution.getDistribution("Annabelle").getAmount());
         assertEquals(MonetaryAmount.valueOf("4.00"), contribution.getDistribution("Corgan").getAmount());
     }
+
 }
