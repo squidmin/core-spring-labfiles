@@ -15,6 +15,6 @@ public interface RestaurantRepository extends Repository<Restaurant, Long> {
 	 * @param merchantNumber the merchant number
 	 * @return the restaurant
 	 */
-	// To refactor: right-click on the method name -> Refactor -> Rename
 	public Restaurant findByNumber(String merchantNumber);
+
 }
