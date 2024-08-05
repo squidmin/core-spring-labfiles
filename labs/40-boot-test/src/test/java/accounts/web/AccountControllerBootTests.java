@@ -1,104 +1,206 @@
 package accounts.web;
 
+import accounts.AccountManager;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import common.money.Percentage;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
-import org.springframework.test.context.junit.jupiter.SpringExtension;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
+import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.http.MediaType;
+import org.springframework.test.web.servlet.MockMvc;
+import rewards.internal.account.Account;
 
-// TODO-06: Get yourself familiarized with various testing utility classes
-// - Uncomment the import statements below
-//import static org.mockito.ArgumentMatchers.any;
-//import static org.mockito.BDDMockito.*;
-//import static org.mockito.Mockito.verify;
-//import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
-//import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
+import java.util.List;
 
-// TODO-07: Replace @ExtendWith(SpringExtension.class) with the following annotation
-// - @WebMvcTest(AccountController.class) // includes @ExtendWith(SpringExtension.class)
-@ExtendWith(SpringExtension.class)
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.anyLong;
+import static org.mockito.BDDMockito.given;
+import static org.mockito.Mockito.verify;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
+
+@WebMvcTest(AccountController.class)  // includes @ExtendWith(SpringExtension.class)
+//@ExtendWith(SpringExtension.class)
 public class AccountControllerBootTests {
 
-	// TODO-08: Autowire MockMvc bean
+    @Autowired
+    private MockMvc mockMvc;
 
-	// TODO-09: Create AccountManager mock bean using @MockBean annotation
+    @MockBean
+    private AccountManager accountManager;
 
-	// TODO-10: Write positive test for GET request for an account
-	// - Uncomment the code and run the test and verify it succeeds
-	@Test
-	public void accountDetails() throws Exception {
+    @Test
+    public void accountDetails() throws Exception {
+        // Arrange
+        given(accountManager.getAccount(0L))
+            .willReturn(new Account("1234567890", "John Doe"));
 
-		//given(accountManager.getAccount(0L))
-		//		.willReturn(new Account("1234567890", "John Doe"));
+        // Act and assert
+        mockMvc.perform(get("/accounts/0"))
+            .andExpect(status().isOk())
+            .andExpect(content().contentType(MediaType.APPLICATION_JSON))
+            .andExpect(jsonPath("name").value("John Doe"))
+            .andExpect(jsonPath("number").value("1234567890"));
 
-		//mockMvc.perform(get("/accounts/0"))
-		//	   .andExpect(status().isOk())
-		//	   .andExpect(content().contentType(MediaType.APPLICATION_JSON))
-		//	   .andExpect(jsonPath("name").value("John Doe"))
-		//	   .andExpect(jsonPath("number").value("1234567890"));
+        // Verify
+        verify(accountManager).getAccount(0L);
+    }
 
-		//verify(accountManager).getAccount(0L);
+    @Test
+    public void createAccount() throws Exception {
+        Account testAccount = new Account("1234512345", "Mary Jones");
+        testAccount.setEntityId(21L);
 
-	}
+        given(accountManager.save(any(Account.class)))
+            .willReturn(testAccount);
 
-	// TODO-11: Write negative test for GET request for a non-existent account
-	// - Uncomment the "given" and "verify" statements
-	// - Write code between the "given" and "verify" statements
-	// - Run the test and verify it succeeds
-	@Test
-	public void accountDetailsFail() throws Exception {
+        mockMvc.perform(post("/accounts")
+                .content(asJsonString(testAccount))
+                .contentType(MediaType.APPLICATION_JSON))
+            .andExpect(status().isCreated())
+            .andExpect(header().string("Location", "http://localhost/accounts/21"));
 
-		//given(accountManager.getAccount(any(Long.class)))
-		//		.willThrow(new IllegalArgumentException("No such account with id " + 0L));
+        verify(accountManager).save(any(Account.class));
+    }
 
-		// (Write code here)
-		// - Use mockMvc to perform HTTP Get operation using "/accounts/9999"
-        //   as a non-existent account URL
-		// - Verify that the HTTP response status is 404
+    @Test
+    public void getAllAccounts() throws Exception {
+        // Arrange
+        given(accountManager.getAllAccounts())
+            .willReturn(
+                List.of(
+                    new Account("1234567890", "John Doe"),
+                    new Account("1234567891", "Jane Doe")
+                )
+            );
 
-		//verify(accountManager).getAccount(any(Long.class));
+        // Act and assert
+        mockMvc.perform(get("/accounts"))
+            .andExpect(status().isOk())
+            .andExpect(content().contentType(MediaType.APPLICATION_JSON))
+            .andExpect(jsonPath("$[0].name").value("John Doe"))
+            .andExpect(jsonPath("$[0].number").value("1234567890"))
+            .andExpect(jsonPath("$[1].name").value("Jane Doe"))
+            .andExpect(jsonPath("$[1].number").value("1234567891"))
+            // Test the length of the JSON array is equal to 21
+            .andExpect(jsonPath("$.length()").value(2));
 
-	}
+        // Verify
+        verify(accountManager).getAllAccounts();
+    }
 
-    // TODO-12: Write test for `POST` request for an account
-	// - Uncomment Java code below
-	// - Write code between the "given" and "verify" statements
-	// - Run the test and verify it succeeds
-	@Test
-	public void createAccount() throws Exception {
+    // Get an existing beneficiary for an account
+    @Test
+    public void getValidBeneficiaryForAnAccount() throws Exception {
+        Account account = new Account("1234567890", "John Doe");
+        account.addBeneficiary("Corgan", new Percentage(0.1));
 
-		//Account testAccount = new Account("1234512345", "Mary Jones");
-		//testAccount.setEntityId(21L);
+        given(accountManager.getAccount(anyLong()))
+            .willReturn(account);
 
-		//given(accountManager.save(any(Account.class)))
-		//		.willReturn(testAccount);
+        mockMvc.perform(get("/accounts/{accountId}/beneficiaries/{beneficiaryName}", 0L, "Corgan"))
+            .andExpect(status().isOk()).andExpect(content().contentType(MediaType.APPLICATION_JSON))
+            .andExpect(jsonPath("name").value("Corgan"))
+            .andExpect(jsonPath("allocationPercentage").value("0.1"));
 
-		// (Write code here)
-		// Use mockMvc to perform HTTP Post operation to "/accounts"
-		// - Set the request content type to APPLICATION_JSON
-		// - Set the request content with Json string of the "testAccount"
-		//   (Use "asJsonString" method below to convert the "testAccount"
-		//   object into Json string)
-		// - Verify that the response status is 201
-		// - Verify that the response "Location" header contains "http://localhost/accounts/21"
+        verify(accountManager).getAccount(anyLong());
+    }
 
-		//verify(accountManager).save(any(Account.class));
+    // Get a non-existing beneficiary for an account
+    @Test
+    public void getNonExistingBeneficiary() {
+        Account account = new Account("1234567890", "John Doe");
+        account.addBeneficiary("Corgan", new Percentage(0.1));
 
-	}
+        given(accountManager.getAccount(anyLong()))
+            .willReturn(account);
+
+        // Act and assert
+        try {
+            mockMvc.perform(get("/accounts/{accountId}/beneficiaries/{beneficiaryName}", 0L, "Kate"))
+                .andExpect(status().isNotFound());  // 404
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        // Verify
+        verify(accountManager).getAccount(anyLong());
+    }
+
+    // Add a new beneficiary to an account.
+    @Test
+    public void addNewBeneficiaryToAccount() {
+        // Arrange
+        given(accountManager.getAccount(anyLong()))
+            .willReturn(new Account("1234567890", "John Doe"));
+
+        // Act and assert
+        try {
+            mockMvc.perform(post("/accounts/{entityId}/beneficiaries", 0L)
+                .content("Kate"))
+                .andExpect(status().isCreated())
+                .andExpect(header().string("Location", "http://localhost/accounts/0/beneficiaries/Kate"));
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    // Remove a beneficiary from an account.
+    @Test
+    public void removeBeneficiaryFromAccount() {
+        // Arrange
+        Account account = new Account("1234567890", "John Doe");
+        account.addBeneficiary("Corgan", new Percentage(0.1));
+        given(accountManager.getAccount(anyLong()))
+            .willReturn(account);
+
+        // Act and assert
+        try {
+            mockMvc.perform(delete("/accounts/{entityId}/beneficiaries/{name}", 0L, "Corgan"))
+                .andExpect(status().isNoContent());
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    // Remove a non-existent beneficiary from an account.
+    @Test
+    public void removeNonExistentBeneficiaryFromAccount() {
+        // Arrange
+        Account account = new Account("1234567890", "John Doe");
+        given(accountManager.getAccount(anyLong()))
+            .willReturn(account);
+
+        // Act and assert
+        try {
+            mockMvc.perform(delete("/accounts/{entityId}/beneficiaries/{name}", 0L, "Noname"))
+                .andExpect(status().isNotFound());
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    @Test
+    public void accountDetailsFail() throws Exception {
+        given(accountManager.getAccount(any(Long.class)))
+            .willThrow(new IllegalArgumentException("No such account with id " + 0L));
+
+        mockMvc.perform(get("/accounts/9999"))
+            .andExpect(status().isNotFound());
+
+        verify(accountManager).getAccount(any(Long.class));
+    }
 
     // Utility class for converting an object into JSON string
-	protected static String asJsonString(final Object obj) {
-		try {
-			final ObjectMapper mapper = new ObjectMapper();
-			final String jsonContent = mapper.writeValueAsString(obj);
-			return jsonContent;
-		} catch (Exception e) {
-			throw new RuntimeException(e);
-		}
-	}
-
-	// TODO-13 (Optional): Experiment with @MockBean vs @Mock
-	// - Change `@MockBean` to `@Mock` for the `AccountManager dependency above
-	// - Run the test and observe a test failure
-	// - Change it back to `@MockBean`
+    protected static String asJsonString(final Object obj) {
+        try {
+            final ObjectMapper mapper = new ObjectMapper();
+            final String jsonContent = mapper.writeValueAsString(obj);
+            return jsonContent;
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+    }
 
 }
