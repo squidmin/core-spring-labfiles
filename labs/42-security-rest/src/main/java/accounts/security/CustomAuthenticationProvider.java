@@ -16,7 +16,7 @@ import org.springframework.stereotype.Component;
 
 //TODO-18a (Optional): Add authentication based upon the custom AuthenticationProvider
 //- Annotate the class with @Component to make it a Spring manager bean
-@Component
+//@Component
 public class CustomAuthenticationProvider implements AuthenticationProvider {
 
 	@Override

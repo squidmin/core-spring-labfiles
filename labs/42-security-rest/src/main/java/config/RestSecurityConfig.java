@@ -50,11 +50,13 @@ public class RestSecurityConfig {
 		UserDetails superadmin = User.withUsername("superadmin").password(passwordEncoder.encode("superadmin")).roles("USER", "ADMIN", "SUPERADMIN").build();
     	// - pass all users in the InMemoryUserDetailsManager constructor
 //		UserDetails spring = User.withUsername("spring").password(passwordEncoder.encode("spring")).roles("USER", "ADMIN").build(); // Adding the user "spring"
+//		UserDetails testUser1 = User.withUsername("testuser1").password(passwordEncoder.encode("testuser1")).roles("USER", "ADMIN").build();
 
 		return new InMemoryUserDetailsManager(
 			user,
 			admin,
 			superadmin
+//			testUser1,
 //			spring
 		);
 	}
