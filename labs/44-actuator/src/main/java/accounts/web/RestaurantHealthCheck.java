@@ -1,5 +1,10 @@
 package accounts.web;
 
+import org.springframework.boot.actuate.health.Health;
+import org.springframework.boot.actuate.health.HealthIndicator;
+import org.springframework.stereotype.Component;
+import rewards.internal.restaurant.RestaurantRepository;
+
 /**
  * TODO-16a: Create custom health indicator
  * - Make this class implement HealthIndicator interface
@@ -9,8 +14,24 @@ package accounts.web;
  *   (no restaurants) or UP otherwise. (Note that RestaurantRepository
  *   has a method that returns number of restaurants.)
  */
-public class RestaurantHealthCheck {
+@Component
+public class RestaurantHealthCheck implements HealthIndicator {
 
+    private final RestaurantRepository repository;
+
+    public RestaurantHealthCheck(RestaurantRepository repository) {
+        this.repository = repository;
+    }
+
+//    @Override
+//    public Health getHealth(boolean includeDetails) {
+//        return HealthIndicator.super.getHealth(includeDetails);
+//    }
+
+    @Override
+    public Health health() {
+        return repository.getRestaurantCount() == 0 ? Health.down().build() : Health.up().build();
+    }
 }
 
 
